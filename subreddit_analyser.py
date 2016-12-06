@@ -32,8 +32,8 @@ class SubredditAnalyser:
         self.stopwords = load_stopwords()
         f = open('data_{}.txt'.format(self.subreddit), 'a')
         # get the top 25 articles
-        progress_bar = Bar('Getting comments for top {0} articles in /r/{1}:'
-                .format(num_articles, self.subreddit), max=num_articles)
+        progress_bar = Bar('Getting comments for articles in /r/{0}:'
+                .format(self.subreddit), max=num_articles)
         for submission in self.reddit.subreddit(self.subreddit).hot(limit=
                 num_articles):
             article_id = submission.shortlink
@@ -56,7 +56,7 @@ class SubredditAnalyser:
                     total_words += 1
             progress_bar.next()
         progress_bar.finish()
-        f.write(str(unique_words))
+        f.write(str(unique_words) + '\n')
         f.write("UNIQUE: {0}\nTOTAL: {1}\n".format(len(unique_words), total_words))
         f.close()
         return unique_words, total_words
