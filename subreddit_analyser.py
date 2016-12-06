@@ -30,16 +30,19 @@ class SubredditAnalyser:
         unique_words = set()
         total_words = 0
         self.stopwords = load_stopwords()
-        f = open('comments_{}.txt'.format(self.subreddit), 'a')
+        f = open('data_{}.txt'.format(self.subreddit), 'a')
         # get the top 25 articles
-        progress_bar = Bar('Getting comments for top {0} articles:'
-                .format(num_articles), max=num_articles)
+        progress_bar = Bar('Getting comments for top {0} articles in /r/{1}:'
+                .format(num_articles, self.subreddit), max=num_articles)
         for submission in self.reddit.subreddit(self.subreddit).hot(limit=
                 num_articles):
             article_id = submission.shortlink
+            # resolve MoreComments instances
+            submission.comments.replace_more(limit=None)
             all_comments = submission.comments.list()
             f.write("ARTICLE_ID = {0}".format(article_id) + '\n')
             for comment in all_comments:
+                
                 body = comment.body.encode('utf-8')
                 f.write(body + '\n')
                 # count the unique words and total words
@@ -53,6 +56,7 @@ class SubredditAnalyser:
                     total_words += 1
             progress_bar.next()
         progress_bar.finish()
+        f.write(str(unique_words))
         f.write("UNIQUE: {0}\nTOTAL: {1}\n".format(len(unique_words), total_words))
         f.close()
         return unique_words, total_words
