@@ -14,15 +14,15 @@ def load_stopwords():
     return stopwords
 
 class SubredditAnalyser:
-    reddit = None 
-    stopwords = None 
-    subreddit = None
-
     def is_url(self, word):
         return "http" in word
 
     def is_stopword(self, word):
         return word in self.stopwords
+
+    # word is probably something like 'TOPKEKTOPKEKTOPKEKTOPKEKTOPKEKTOPKEKT...'
+    def is_wall(self, word):
+        return len(word) > 30
 
     def uniqueness(self, num_articles=25):
         # TODO: check if submission is already saved locally
@@ -50,7 +50,8 @@ class SubredditAnalyser:
                 for word in words:
                     cleaned_word = str(word.lower()).translate(None,
                             string.punctuation)
-                    if self.is_url(cleaned_word) or self.is_stopword(cleaned_word):
+                    if self.is_url(cleaned_word) or self.is_stopword(cleaned_word)
+                            or self.is_wall(cleaned_word):
                         continue
                     unique_words.add(cleaned_word)
                     total_words += 1
