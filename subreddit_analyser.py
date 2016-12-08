@@ -50,7 +50,8 @@ class SubredditAnalyser:
                 for word in words:
                     cleaned_word = str(word.lower()).translate(None,
                             string.punctuation)
-                    if self.is_url(cleaned_word) or self.is_stopword(cleaned_word)
+                    if self.is_url(cleaned_word) \
+                            or self.is_stopword(cleaned_word) \
                             or self.is_wall(cleaned_word):
                         continue
                     unique_words.add(cleaned_word)
