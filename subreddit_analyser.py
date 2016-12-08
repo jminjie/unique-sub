@@ -34,7 +34,7 @@ class SubredditAnalyser:
         # get the top 25 articles
         progress_bar = Bar('Getting comments for articles in /r/{0}:'
                 .format(self.subreddit), max=num_articles)
-        for submission in self.reddit.subreddit(self.subreddit).hot(limit=
+        for submission in self.reddit.subreddit(self.subreddit).top(limit=
                 num_articles):
             article_id = submission.shortlink
             # resolve MoreComments instances
